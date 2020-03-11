@@ -3,19 +3,19 @@ services:
   - docker
 
 before_install:
-  - docker build -t mdrahman-upm/react-test -f ./client/Dockerfile.dev
+  - docker build -t mdrahman76/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run mdrahman-upm/react-test npm test -- --coverage --watchAll=false
+  - docker run mdrahman76/react-test npm test -- --coverage --watchAll=false
 
 after_success:
-  - docker build -t mdrahman-upm/multi-client ./client
-  - docker build -t mdrahman-upm/multi-nginx ./nginx
-  - docker build -t mdrahman-upm/multi-server ./server
-  - docker build -t mdrahman-upm/multi-worker ./worker
+  - docker build -t mdrahman76/multi-client ./client
+  - docker build -t mdrahman76/multi-nginx ./nginx
+  - docker build -t mdrahman76/multi-server ./server
+  - docker build -t mdrahman76/multi-worker ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login - u "$DOCKER_ID" --password-stdin
-  - docker push mdrahman-upm/multi-client
-  - docker push mdrahman-upm/multi-nginx
-  - docker push mdrahman-upm/multi-server
-  - docker push mdrahman-upm/multi-worker
+  - docker push mdrahman76/multi-client
+  - docker push mdrahman76/multi-nginx
+  - docker push mdrahman76/multi-server
+  - docker push mdrahman76/multi-worker

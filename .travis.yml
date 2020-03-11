@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t mdrahman-upm/react-test -f ./client/Dockerfile.dev
+
+script:
+  - docker run mdrahman-upm/react-test npm test -- --coverage --watchAll=false
+
+after_success:
+  - docker build -t mdrahman-upm/multi-client ./client
+  - docker build -t mdrahman-upm/multi-nginx ./nginx
+  - docker build -t mdrahman-upm/multi-server ./server
+  - docker build -t mdrahman-upm/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login - u "$DOCKER_ID" --password-stdin
+  - docker push mdrahman-upm/multi-client
+  - docker push mdrahman-upm/multi-nginx
+  - docker push mdrahman-upm/multi-server
+  - docker push mdrahman-upm/multi-worker
